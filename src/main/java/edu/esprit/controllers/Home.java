@@ -8,41 +8,51 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class Home {
-    @FXML
-    private Button btnMarket;
 
-    @FXML
-    private Hyperlink linkMarket;
+ @FXML
+private Button btnPanier;
 
-    @FXML
-    void Market(ActionEvent event) {
-        openMarketPlace();
+@FXML
+private Hyperlink linkMarket;
+
+@FXML
+private Label incrementer;
+
+@FXML
+void afficherPanier(ActionEvent event) {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterPanier.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+@FXML
+void marketPlace(ActionEvent event) {
+
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MarketPlace.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("MarketPlace");
+
+        stage.show();
+        Stage homeStage = (Stage) linkMarket.getScene().getWindow();
+        homeStage.close();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
 
-    @FXML
-    void marketPlace(ActionEvent event) {
-        openMarketPlace();
-    }
-
-    private void openMarketPlace() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MarketPlace.fxml"));
-            Parent marketPlaceParent = loader.load();
-            Scene marketPlaceScene = new Scene(marketPlaceParent);
-
-            Stage stage = new Stage();
-            stage.setScene(marketPlaceScene);
-            stage.setTitle("MarketPlace");
-
-
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+}
 }
