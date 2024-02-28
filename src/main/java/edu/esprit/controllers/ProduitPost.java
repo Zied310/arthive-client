@@ -47,8 +47,25 @@ public class ProduitPost extends AnchorPane {
     private Button acheterButton;
 
 
+    private int produitId;
 
-    private String descriptionProduit; // Nouvel attribut
+    public void setProduitId(int id) {
+        this.produitId = id;
+    }
+
+    public int getProduitId() {
+        return produitId;
+    }
+
+    private AjouterPanier ajouterPanierController;
+
+    // Méthode pour initialiser la référence au contrôleur AjouterPanier
+    public void setAjouterPanierController(AjouterPanier ajouterPanierController) {
+        this.ajouterPanierController = ajouterPanierController;
+    }
+
+
+    private String descriptionProduit;
 
     public void setDescriptionProduit(String descriptionProduit) {
         this.descriptionProduit = descriptionProduit;
@@ -59,6 +76,11 @@ public class ProduitPost extends AnchorPane {
         return descriptionProduit;
     }
 
+    private MarketPlace marketPlaceController;
+
+    public void setMarketPlaceController(MarketPlace marketPlaceController) {
+        this.marketPlaceController = marketPlaceController;
+    }
 
     // Add getters and setters for each field
 
@@ -136,13 +158,17 @@ public class ProduitPost extends AnchorPane {
         try {
             root = loader.load();
             AcheterProduit controller = loader.getController();
-            controller.initData(produitImage.getImage(), nomUser.getText(), publicationTime.getText(), ismproduit.getText(), prixProduit.getText(), stockProduit.getText(), descriptionProduit);
+            controller.initData(produitImage.getImage(), nomUser.getText(), publicationTime.getText(), ismproduit.getText(), prixProduit.getText(), stockProduit.getText(), descriptionProduit , produitId);
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
+
     }
 
     public void initialize() {
