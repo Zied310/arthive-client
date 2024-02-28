@@ -12,12 +12,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="517.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AjouterProduit">
    <children>
       <ImageView fx:id="imageview" fitHeight="194.0" fitWidth="233.0" layoutX="65.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="add" layoutX="198.0" layoutY="454.0" mnemonicParsing="false" onAction="#AjouterProduit" prefHeight="40.0" prefWidth="124.0" stylesheets="@CSS/button.css" text="Ajouter Produit" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="391.0">
+      <Button fx:id="add" layoutX="203.0" layoutY="454.0" mnemonicParsing="false" onAction="#AjouterProduit" prefHeight="40.0" prefWidth="133.0" stylesheets="@CSS/button.css" text="Ajouter Produit" AnchorPane.leftAnchor="203.0" AnchorPane.rightAnchor="376.0">
          <effect>
             <Blend>
                <topInput>
@@ -28,54 +29,24 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <TextField fx:id="addname" layoutX="428.0" layoutY="109.0" opacity="0.76" prefHeight="19.0" prefWidth="196.0" promptText="Écrivez le nom de l'art" />
-      <Label layoutX="360.0" layoutY="112.0" prefHeight="17.0" prefWidth="52.0" text="Nom">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <Spinner fx:id="priceSpinner" editable="true" layoutX="428.0" layoutY="157.0" opacity="0.79" prefHeight="25.0" prefWidth="196.0" />
-      <Label layoutX="360.0" layoutY="159.0" prefHeight="17.0" prefWidth="52.0" text="Prix $">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <TextArea fx:id="description" layoutX="142.0" layoutY="306.0" prefHeight="51.0" prefWidth="512.0" promptText="Écrivez une description" />
-      <Label layoutX="60.0" layoutY="315.0" text="Description">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <Label layoutX="60.0" layoutY="381.0" prefHeight="17.0" prefWidth="61.0" text="Catégorie">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <Spinner fx:id="stockSpinner" editable="true" layoutX="428.0" layoutY="262.0" prefHeight="25.0" prefWidth="196.0" />
-      <Label layoutX="360.0" layoutY="261.0" prefHeight="25.0" prefWidth="52.0" text="Stock">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <AnchorPane prefHeight="25.0" prefWidth="708.0">
+      <TextField fx:id="addname" layoutX="428.0" layoutY="97.0" opacity="0.76" prefHeight="31.0" prefWidth="196.0" promptText="Écrivez le nom de l'art" />
+      <Spinner fx:id="priceSpinner" editable="true" layoutX="428.0" layoutY="161.0" opacity="0.79" prefHeight="31.0" prefWidth="196.0" />
+      <TextArea fx:id="description" layoutX="142.0" layoutY="306.0" prefHeight="65.0" prefWidth="512.0" promptText="Écrivez une description" />
+      <Spinner fx:id="stockSpinner" disable="true" editable="true" layoutX="427.0" layoutY="260.0" prefHeight="31.0" prefWidth="196.0" />
+      <AnchorPane prefHeight="58.0" prefWidth="712.0">
          <children>
-            <ImageView fitHeight="51.0" fitWidth="708.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="img" fitHeight="51.0" fitWidth="715.0" layoutX="-1.0">
-               <image>
-                  <Image url="@image/image.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="art" fitHeight="45.0" fitWidth="98.0" layoutX="23.0" layoutY="3.0">
-               <image>
-                  <Image url="@image/arthive.png" />
-               </image>
-            </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a4cbebeb" height="51.0" layoutX="-2.0" stroke="#dadada" strokeType="INSIDE" styleClass="root" width="714.0" />
             <Label fx:id="userName" layoutX="535.0" layoutY="13.0" prefHeight="20.0" prefWidth="140.0" text="chams ben said " textFill="WHITE">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="7.0" prefHeight="39.0" prefWidth="708.0" text="Ajouter un produit " textAlignment="CENTER" textFill="#f8f5f5">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="708.0" text="Ajouter un produit " textAlignment="CENTER" textFill="#030dbd">
                <font>
                   <Font name="System Italic" size="27.0" />
                </font>
                <effect>
-                  <Glow level="1.0" />
+                  <Glow level="0.17" />
                </effect>
             </Label>
             <ImageView fx:id="avatar" fitHeight="39.0" fitWidth="52.0" layoutX="656.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
@@ -85,7 +56,19 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <Button fx:id="upload" layoutX="73.0" layoutY="154.0" mnemonicParsing="false" onMouseClicked="#uploadArt" prefHeight="51.0" prefWidth="212.0" text="Veuillez télécharger votre art">
+      <Button fx:id="upload" layoutX="73.0" layoutY="154.0" mnemonicParsing="false" onMouseClicked="#uploadArt" prefHeight="51.0" prefWidth="233.0" styleClass="Event-view" stylesheets="@Event.css" text="Veuillez télécharger votre art" textFill="#3300ff">
+         <effect>
+            <Blend>
+               <topInput>
+                  <Glow />
+               </topInput>
+            </Blend>
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="annule" layoutX="398.0" layoutY="454.0" mnemonicParsing="false" onAction="#canceladd" prefHeight="40.0" prefWidth="133.0" stylesheets="@CSS/button.css" text="Annuler ">
          <effect>
             <Blend>
                <topInput>
@@ -97,23 +80,40 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="annule" layoutX="398.0" layoutY="454.0" mnemonicParsing="false" onAction="#canceladd" prefHeight="40.0" prefWidth="124.0" stylesheets="@CSS/button.css" text="Annuler ">
-         <effect>
-            <Blend>
-               <topInput>
-                  <Glow />
-               </topInput>
-            </Blend>
-         </effect>
+      <CheckBox fx:id="dispo" alignment="TOP_RIGHT" contentDisplay="BOTTOM" layoutX="369.0" layoutY="210.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#checkdispo" prefHeight="20.0" prefWidth="124.0" text="Disponibilité" textFill="#2e157f">
          <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <CheckBox fx:id="dispo" alignment="TOP_RIGHT" contentDisplay="BOTTOM" layoutX="360.0" layoutY="202.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#checkdispo" prefHeight="20.0" prefWidth="124.0" text="Disponibilité">
-         <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="13.0" />
          </font>
       </CheckBox>
-      <ComboBox fx:id="category" layoutX="142.0" layoutY="379.0" prefWidth="150.0" promptText="Choisir catégorie" />
+      <ComboBox fx:id="category" layoutX="142.0" layoutY="382.0" prefHeight="47.0" prefWidth="163.0" promptText="Choisir catégorie" styleClass="Event-view" stylesheets="@Event.css" />
+      <Label fx:id="nameErrorLabel" layoutX="428.0" layoutY="79.0" prefHeight="17.0" prefWidth="196.0" textFill="#ada7b9" />
+      <Label fx:id="descriptionErrorLabel" layoutX="142.0" layoutY="287.0" prefHeight="17.0" prefWidth="512.0" textFill="#ada7b9" />
+      <Label layoutX="428.0" layoutY="135.0" prefHeight="20.0" prefWidth="196.0" text="Saisissez uniquement des chiffres" textFill="#ada7b9" />
+      <Label fx:id="stockErrorLabel" layoutX="429.0" layoutY="245.0" prefHeight="20.0" prefWidth="196.0" textAlignment="CENTER" textFill="#ada7b9" />
+      <Label layoutX="371.0" layoutY="101.0" prefHeight="17.0" prefWidth="52.0" text="Nom" textFill="#2e157f">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="373.0" layoutY="169.0" prefHeight="17.0" prefWidth="52.0" text="Prix $" textFill="#2e157f">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="372.0" layoutY="268.0" prefHeight="17.0" prefWidth="52.0" text="Stock" textFill="#2e157f">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="56.0" layoutY="313.0" prefHeight="19.0" prefWidth="80.0" text="Description" textFill="#2e157f">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="58.0" layoutY="395.0" prefHeight="19.0" prefWidth="68.0" text="Catégorie" textFill="#2e157f">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
