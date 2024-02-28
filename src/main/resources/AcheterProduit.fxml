@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="573.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AcheterProduit">
+<AnchorPane prefHeight="674.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AcheterProduit">
    <children>
-      <ImageView fitHeight="579.0" fitWidth="197.0" layoutX="564.0" layoutY="-3.0">
-         <image>
-            <Image url="@image/image2.png" />
-         </image>
-         <effect>
-            <BoxBlur />
-         </effect>
-      </ImageView>
-      <ImageView fx:id="art" fitHeight="92.0" fitWidth="173.0" layoutX="575.0" layoutY="5.0">
-         <image>
-            <Image url="@image/arthive.png" />
-         </image>
-      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a4cbebeb" height="679.0" layoutX="557.0" stroke="#dadada" strokeType="INSIDE" styleClass="root" width="225.0" />
       <HBox layoutX="14.0" layoutY="16.0" prefHeight="36.0" prefWidth="530.0">
          <children>
             <ImageView fx:id="avatar" fitHeight="54.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
@@ -42,49 +30,49 @@
             <Label fx:id="publicationTime" alignment="CENTER" prefHeight="36.0" prefWidth="210.0" text="Time" textFill="#b3afbc" />
          </children>
       </HBox>
-      <VBox layoutX="22.0" layoutY="54.0" prefHeight="497.0" prefWidth="519.0">
+      <VBox layoutX="22.0" layoutY="87.0" prefHeight="581.0" prefWidth="507.0">
          <children>
-            <ImageView fx:id="imageProduit" fitHeight="345.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="nomProduit" alignment="CENTER" prefHeight="52.0" prefWidth="518.0" text="Nom Image " textAlignment="CENTER" textFill="#1417b5">
+            <ImageView fx:id="imageProduit" fitHeight="364.0" fitWidth="507.0" pickOnBounds="true" preserveRatio="true" />
+            <Region prefHeight="51.0" prefWidth="507.0" />
+            <Label fx:id="nomProduit" alignment="CENTER" prefHeight="91.0" prefWidth="507.0" text="Nom Image " textAlignment="CENTER" textFill="#1417b5">
                <font>
                   <Font name="System Italic" size="27.0" />
                </font>
             </Label>
-            <Label prefHeight="17.0" prefWidth="532.0" text="Description : " textFill="#4bacb5">
+            <Region prefHeight="51.0" prefWidth="507.0" />
+            <Label prefHeight="93.0" prefWidth="507.0" text="Description : " textFill="#5faae8">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="descriptProduit" prefHeight="90.0" prefWidth="524.0" text="Description ">
+            <Label fx:id="descriptProduit" prefHeight="135.0" prefWidth="519.0" styleClass="descriptProduit" stylesheets="@CSS/descriptProduit.css" text="Description " textFill="#443a4d">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
          </children>
       </VBox>
-      <Label fx:id="prix" layoutX="574.0" layoutY="165.0" prefHeight="92.0" prefWidth="181.0" text=" Le Prix de la piece  &#10;est : .....$ " textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="prix" layoutX="574.0" layoutY="221.0" prefHeight="92.0" prefWidth="181.0" text=" Le Prix de la piece  &#10;est : .....$ " textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button alignment="BASELINE_LEFT" contentDisplay="CENTER" layoutX="577.0" layoutY="416.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="170.0" styleClass="search-button" stylesheets="@CSS/bouton_pub.css" text="          Envoyer Message" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.rightAnchor="14.0">
-         <font>
-            <Font name="System Bold Italic" size="14.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="WAIT" />
-         </cursor>
-      </Button>
-      <ImageView accessibleRole="BUTTON" fitHeight="38.0" fitWidth="38.0" layoutX="585.0" layoutY="422.0">
-         <image>
-            <Image url="@image/message.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="nbrStock" layoutX="585.0" layoutY="263.0" prefHeight="82.0" prefWidth="153.0" text=" Piece(s) disponible en Stock " textAlignment="CENTER" textFill="#ebe0e0" wrapText="true">
+      <Label fx:id="nbrStock" layoutX="591.0" layoutY="312.0" prefHeight="82.0" prefWidth="153.0" text=" Piece(s) disponible en Stock " textAlignment="CENTER" textFill="#f7f6f8" wrapText="true">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Text fill="#9797a4" fontSmoothingType="LCD" layoutX="577.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour acheter veuillez contacter l'artiste vendeur " textAlignment="CENTER" wrappingWidth="173.00000131130219" />
+      <Text fill="#838080" fontSmoothingType="LCD" layoutX="577.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour acheter veuillez cliquer sur  Ajouter Panier" textAlignment="CENTER" wrappingWidth="173.00000131130219" />
+      <Button layoutX="582.0" layoutY="494.0" mnemonicParsing="false" onAction="#ajouterPanier" prefHeight="49.0" prefWidth="173.0" stylesheets="@CSS/button.css" text="             Ajouter Panier" />
+      <ImageView fitHeight="49.0" fitWidth="51.0" layoutX="590.0" layoutY="495.0">
+         <image>
+            <Image url="@image/marketPlace.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="225.0" layoutX="552.0" layoutY="-17.0">
+         <image>
+            <Image url="@image/hive__2_-removebg-preview.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
