@@ -1,0 +1,13 @@
+.button {
+    -fx-background-color: rgba(3, 13, 189, 0.65);
+    -fx-background-radius: 30;
+    -fx-text-fill: #fff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+}
+
+.button:hover {
+    -fx-background-color: #002B4F; /* Couleur de fond bleue plus foncée au survol */
+    -fx-border-color: #002B4F; /* Couleur de la bordure plus foncée au survol */
+}
