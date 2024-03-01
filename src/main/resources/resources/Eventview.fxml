@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="250.0" minWidth="250.0" prefHeight="291.0" prefWidth="339.0" styleClass="Event-view" stylesheets="@Event.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.EventView">
+   <children>
+
+                  <Label fx:id="titleText" layoutX="26.0" layoutY="120.0" prefHeight="38.0" prefWidth="277.0" text="Titre de l'évènement">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="dateText" layoutX="49.0" layoutY="155.0" prefHeight="31.0" prefWidth="204.0" />
+      <Button fx:id="participerButton" layoutX="144.0" layoutY="249.0" mnemonicParsing="true" onAction="#participerButton" text="Participer" />
+      <Button fx:id="modifierButton" layoutX="26.0" layoutY="171.0" mnemonicParsing="false" onAction="#modifierButtonClicked" prefHeight="19.0" prefWidth="83.0" text="Modifier" visible="false" />
+      <Button fx:id="supprimerButton" layoutX="28.0" layoutY="202.0" mnemonicParsing="false" onAction="#supprimerButtonClicked" prefHeight="19.0" prefWidth="83.0" text="Supprimer" visible="false" />
+
+      <Label fx:id="lieuText" layoutX="51.0" layoutY="187.0" prefHeight="31.0" prefWidth="122.0" />
+      <Hyperlink fx:id="voirDetail" layoutX="24.0" layoutY="219.0" onAction="#voirDetailClicked" text="Voir détail" userData="{evenement}" />
+      <Label fx:id="ParticipantText" layoutX="24.0" layoutY="249.0" text="Participants" />
+      <VBox layoutX="18.0" layoutY="4.0" prefHeight="117.0" prefWidth="266.0">
+         <children>
+            <ImageView id="eventImageView" fx:id="eventImageView" fitHeight="121.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true">
+               <styleClass>
+                  <String fx:value="avatar" />
+                  <String fx:value="image-container" />
+               </styleClass>
+            </ImageView>
+         </children>
+      </VBox>
+      <ImageView fitHeight="29.0" fitWidth="26.0" layoutX="24.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Image/date.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="29.0" fitWidth="26.0" layoutX="24.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Image/icone-de-localisation-bleue.png" />
+         </image>
+      </ImageView>
+      
+
+   </children>
+</AnchorPane>
