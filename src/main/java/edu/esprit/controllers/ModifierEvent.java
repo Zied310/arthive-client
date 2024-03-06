@@ -1,8 +1,10 @@
 package edu.esprit.controllers;
-
 import edu.esprit.crud.CrudEvent;
 import edu.esprit.crud.ServiceUser;
 import edu.esprit.entities.Event;
+import edu.esprit.enums.CategorieEvenement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,6 +48,8 @@ public class ModifierEvent implements Initializable {
     private EventView eventView;
     @FXML
     private GridPane eventsGrid;
+    @FXML
+    private ComboBox<CategorieEvenement> category;
 
     private final CrudEvent crudEvent = new CrudEvent();
     private final ServiceUser serviceUser = new ServiceUser();
@@ -64,6 +68,9 @@ public class ModifierEvent implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         validerButton.setOnAction(this::validerButtonClicked);
+        if (category != null) {
+            validerButton.setOnAction(this::validerButtonClicked);
+        }
     }
 
     public void initData(Event evenement) {
@@ -89,7 +96,9 @@ public class ModifierEvent implements Initializable {
 
         lieuField.setText(evenement.getLieu_evenement());
         descriptionArea.setText(evenement.getDescription_evenement());
-
+        ObservableList<CategorieEvenement> categories = FXCollections.observableArrayList(CategorieEvenement.values());
+        category.setItems(categories);
+        category.setValue(evenement.getCategorieEvenement());
 
     }
 
@@ -142,6 +151,7 @@ public class ModifierEvent implements Initializable {
         String updatedDescription = descriptionArea.getText();
         String updatedLieu = lieuField.getText();
 
+
         // Assurez-vous que l'utilisateur associé à l'événement n'est pas null
         if (evenementToModify.getUser() != null) {
             // Créez un nouvel objet Event avec ces modifications
@@ -153,6 +163,7 @@ public class ModifierEvent implements Initializable {
             updatedEvent.setD_fin_evenement(Timestamp.valueOf(updatedDateFin));
             updatedEvent.setDescription_evenement(updatedDescription);
             updatedEvent.setLieu_evenement(updatedLieu);
+            updatedEvent.setCategorieEvenement(category.getValue()); // Ajout de la catégorie
 
 // Conservez l'image d'origine uniquement si elle n'est pas nulle
             String originalImage = evenementToModify.getImage();
