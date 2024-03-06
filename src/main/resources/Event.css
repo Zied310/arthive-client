@@ -194,3 +194,36 @@
 .small-button:hover {
     -fx-background-color: #0077cc; /* Darker shade on hover */
 }
+
+.split-menu-button {
+    -fx-background-color:rgba(3, 13, 189, 0.65); /* Background color for the button part */
+    -fx-text-fill: white; /* Text color for the button part */
+}
+
+.split-menu-button .label {
+    -fx-padding: 0 5 0 5; /* Padding for the text in the button part */
+}
+
+.split-menu-button .arrow {
+    -fx-background-color: rgba(3, 13, 189, 0.65); /* Background color for the arrow part */
+}
+
+.split-menu-button .arrow-button {
+    -fx-padding: 0 5 0 5; /* Padding for the arrow part */
+}
+
+.split-menu-button .menu-item {
+    -fx-background-color: rgba(3, 13, 189, 0.65); /* Background color for menu items */
+    -fx-text-fill: white; /* Text color for menu items */
+}
+
+.split-menu-button .menu-item:hover {
+    -fx-background-color:#0077cc; /* Hover background color for menu items */
+}
+
+.evenement-passe {
+    /* Vous pouvez ajuster ces propriétés pour correspondre à votre style préféré */
+    -fx-opacity: 0.5; /* Réduit l'opacité pour rendre l'événement moins visible */
+    -fx-background-color: #ddd; /* Change la couleur de fond pour indiquer qu'il est passé */
+    /* Ajoutez d'autres styles au besoin */
+}

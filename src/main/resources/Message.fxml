@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="594.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Message">
+   <children>
+      <ScrollPane layoutX="-1.0" layoutY="99.0" prefHeight="424.0" prefWidth="498.0" />
+      <Button layoutX="392.0" layoutY="540.0" mnemonicParsing="false" text="Envoyer" />
+      <Label layoutX="182.0" layoutY="39.0" text="Message">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <TextField layoutX="10.0" layoutY="532.0" prefHeight="49.0" prefWidth="372.0" />
+   </children>
+</AnchorPane>

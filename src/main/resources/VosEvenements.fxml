@@ -52,7 +52,7 @@
       <Hyperlink layoutX="81.0" layoutY="486.0" text="Groupes" textFill="#070000" wrapText="true" />
       <Hyperlink layoutX="82.0" layoutY="539.0" text="Messages" textFill="#070000" wrapText="true" />
       <Hyperlink layoutX="87.0" layoutY="643.0" text="Evènements" textFill="#070000" />
-      <Hyperlink layoutX="94.0" layoutY="344.0" text="Nom" textFill="#000000fb">
+      <Hyperlink layoutX="56.0" layoutY="332.0" text="Siwar hmaidi" textFill="#000000fb">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>

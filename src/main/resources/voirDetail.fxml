@@ -4,34 +4,36 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="452.0" prefWidth="503.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.VoirDetail">
+<?import javafx.scene.web.WebView?>
+<AnchorPane prefHeight="780.0" prefWidth="767.0" styleClass="Event-view" stylesheets="@Event.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.VoirDetail">
    <children>
-      <Label layoutX="82.0" layoutY="147.0" text="A propos">
+      <Label layoutX="43.0" layoutY="147.0" text="A propos">
          <font>
             <Font name="System Bold Italic" size="23.0" />
          </font>
       </Label>
-      <Label fx:id="titreLabel" contentDisplay="CENTER" layoutX="43.0" layoutY="92.0" prefHeight="55.0" prefWidth="417.0" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
+      <Label fx:id="titreLabel" contentDisplay="CENTER" layoutX="11.0" layoutY="92.0" prefHeight="55.0" prefWidth="501.0" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
          <font>
             <Font name="System Bold Italic" size="27.0" />
          </font></Label>
-      <ImageView fitHeight="27.0" fitWidth="94.0" layoutX="53.0" layoutY="254.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="27.0" fitWidth="94.0" layoutX="53.0" layoutY="274.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Image/1248222.png" />
          </image>
       </ImageView>
-      <Label fx:id="lieuText" layoutX="91.0" layoutY="248.0" prefHeight="39.0" prefWidth="381.0" />
-      <Label fx:id="descriptionText" layoutX="79.0" layoutY="326.0" prefHeight="116.0" prefWidth="417.0" />
-      <Label fx:id="dateText" layoutX="204.0" layoutY="195.0" prefHeight="39.0" prefWidth="317.0" />
-      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="53.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="lieuText" layoutX="95.0" layoutY="268.0" prefHeight="39.0" prefWidth="381.0" />
+      <Label fx:id="descriptionText" layoutX="80.0" layoutY="346.0" prefHeight="83.0" prefWidth="391.0" wrapText="true" />
+      <Label fx:id="dateText" layoutX="204.0" layoutY="182.0" prefHeight="39.0" prefWidth="163.0" />
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="53.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Image/date.png" />
          </image>
       </ImageView>
-      <Label layoutX="100.0" layoutY="204.0" text="Date de début" />
-      <Label layoutX="91.0" layoutY="292.0" text="Description">
+      <Label layoutX="96.0" layoutY="186.0" text="Date de début" />
+      <Label layoutX="93.0" layoutY="305.0" text="Description">
          <font>
             <Font name="System Italic" size="21.0" />
          </font>
@@ -41,5 +43,8 @@
             <Image url="@Image/hive__2_-removebg-preview.png" />
          </image>
       </ImageView>
+      <Label fx:id="dateTextFin" layoutX="206.0" layoutY="215.0" prefHeight="31.0" prefWidth="155.0" />
+      <Label layoutX="96.0" layoutY="215.0" text="Date de fin" />
+      <WebView fx:id="mapWebView" layoutX="377.0" layoutY="14.0" prefHeight="266.0" prefWidth="542.0" />
    </children>
 </AnchorPane>
