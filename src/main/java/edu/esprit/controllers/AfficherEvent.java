@@ -5,6 +5,7 @@ import edu.esprit.crud.CrudParticipations;
 import edu.esprit.crud.ServiceUser;
 import edu.esprit.entities.Event;
 import edu.esprit.entities.User;
+import edu.esprit.enums.CategorieEvenement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,7 +40,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javafx.scene.control.TextField;
 import edu.esprit.crud.ServiceUser;
-
 
 
 public class AfficherEvent implements Initializable {
@@ -81,6 +81,8 @@ public class AfficherEvent implements Initializable {
     private ScrollPane scroll;
     @FXML
     private ImageView eventImageView;
+    @FXML
+    private ComboBox<CategorieEvenement> categorieComboBox;
     private Event evenement; // Declare the variable evenement
     private EventView eventView;
 
@@ -131,6 +133,7 @@ public class AfficherEvent implements Initializable {
                 Scene scene = new Scene(root);
                 Stage stage = new Stage();
                 stage.setScene(scene);
+                stage.setTitle(" Détail");
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -149,6 +152,7 @@ public class AfficherEvent implements Initializable {
         eventsGrid.setHgap(40); // Espace horizontal de 10 pixels
         Button vosEvenementsButton = new Button("Vos évènements");
         vosEvenementsButton.setOnAction(this::afficherVosEvenements);
+        categorieComboBox.setItems(FXCollections.observableArrayList(CategorieEvenement.values()));
 
 
     }
@@ -160,7 +164,7 @@ public class AfficherEvent implements Initializable {
         pane.add(new javafx.scene.control.Label("Date: " + evenement.getD_debut_evenement()), 0, 1);
         pane.add(new javafx.scene.control.Label("Lieu: " + evenement.getLieu_evenement()), 0, 2);
 
-        Button participerButton = new Button("Participer");
+            Button participerButton = new Button("Participer");
         // participerButton.setOnAction(this::participerButton);
         participerButton.setUserData(evenement);
         pane.add(participerButton, 0, 3);
@@ -171,6 +175,8 @@ public class AfficherEvent implements Initializable {
         voirDetail.setUserData(evenement); // Assurez-vous que evenement est un objet de type Event
         pane.add(voirDetail, 0, 4);
         pane.add(voirDetail, 0, 4);
+
+
 
         ImageView eventImageView = new ImageView();
         eventImageView.setFitWidth(300); // Initial width
@@ -187,6 +193,8 @@ public class AfficherEvent implements Initializable {
 
     private void afficherEvenements() {
         List<Event> evenements = crudEvent.getAll();
+        // Tri des événements par date de début de manière croissante
+        evenements.sort(Comparator.comparing(Event::getD_debut_evenement));
         AfficherEvent afficherEvent = new AfficherEvent();
 
 
@@ -210,6 +218,20 @@ public class AfficherEvent implements Initializable {
                     eventViewController.setEventImageView(eventImage);
                 } else {
                     System.out.println("Failed to load image: " + imagePath);
+                }
+
+                // Vérifier si la date de fin de l'événement est passée
+                if (evenement.getD_fin_evenement().toLocalDateTime().isBefore(LocalDateTime.now())) {
+                    // Appliquer une classe CSS spécifique pour les événements passés
+                    anchorPane.getStyleClass().add("evenement-passe");
+                    // Désactiver le bouton "Participer" pour les événements passés
+                    Button participerButton = eventViewController.getParticiperButton();
+                    participerButton.setDisable(true);
+
+                    // Désactiver le lien "Voir détail" pour les événements passés
+                    Hyperlink voirDetail = eventViewController.getVoirDetail();
+                    voirDetail.setDisable(true);
+
                 }
 
                 // Ajouter EventView à la GridPane
@@ -358,7 +380,7 @@ public class AfficherEvent implements Initializable {
         AfficherEvent afficherEvent = new AfficherEvent();
 
         if (this.eventsGrid == null) {
-            System.out.println("eventsGrid est null. Assurez-vous qu'il est correctement initialisé.");
+            //System.out.println("eventsGrid est null. Assurez-vous qu'il est correctement initialisé.");
             return;
         }
 
@@ -410,8 +432,44 @@ public class AfficherEvent implements Initializable {
         }
         return null;
     }
+    private ObservableList<Event> eventList;
 
 
+    public ObservableList<Event> getEventList() {
+        return eventList;
+    }
+    public void refreshEvenementsList() {
+        afficherEvenements();
+    }
+    @FXML
+    private void filterEventsByCategory(ActionEvent event) {
+        // Récupérer la catégorie sélectionnée
+        CategorieEvenement selectedCategory = categorieComboBox.getValue();
+
+        if (selectedCategory != null) {
+            // Filtrer les événements par la catégorie sélectionnée
+            List<Event> filteredEvents = crudEvent.getEventsByCategory(selectedCategory);
+
+            // Vérifier si la liste filtrée est vide
+            if (filteredEvents.isEmpty()) {
+                // Aucun événement trouvé, afficher l'image "ay.png" avec un message
+                messageImage.setImage(new Image("/Image/ay.png"));
+                messageLabel.setText("Aucun événement trouvé pour la catégorie : " + selectedCategory);
+                // Effacer la liste des événements actuellement affichés
+                eventsGrid.getChildren().clear();
+                // Afficher la messageBox
+                messageBox.setVisible(true);
+            } else {
+                // Afficher les événements filtrés
+                updateEventView(filteredEvents);
+                // Cacher le message
+                messageBox.setVisible(false);
+            }
+        } else {
+            // Si aucune catégorie n'est sélectionnée, afficher tous les événements
+            refreshEvenementsList();
+        }
+    }
 
 }
 
