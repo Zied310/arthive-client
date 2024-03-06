@@ -46,7 +46,11 @@ public class VosEvenements implements Initializable {
     private Button creerEvenement;
 
     private final CrudEvent crudEvent = new CrudEvent();
+    private EventView eventView;
 
+    public void setEventView(EventView eventView) {
+        this.eventView = eventView;
+    }
 
     public void initData(int userId) {
         userNameLabel.setText("Vos évènements");
@@ -180,6 +184,8 @@ public class VosEvenements implements Initializable {
             e.printStackTrace();
         }
     }
-
+    public void refreshEventList(List<Event> updatedEventList) {
+        // Mettez à jour la liste des événements ici
+    }
 
 }
