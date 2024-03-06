@@ -1,6 +1,6 @@
 package edu.esprit.entities;
 
-import javafx.scene.image.Image;
+import edu.esprit.enums.CategorieEvenement;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -18,16 +18,25 @@ public class Event {
     private User user;
     private String image;
     private Set<Participation> participants;
+    private CategorieEvenement categorieEvenement;
 
 
     public Event() {
         this.participants = new HashSet<>();
+
     }
 
 
+    public CategorieEvenement getCategorieEvenement() {
+        return categorieEvenement;
+    }
+
+    public void setCategorieEvenement(CategorieEvenement categorieEvenement) {
+        this.categorieEvenement = categorieEvenement;
+    }
 
 
-    public Event(int id_evenement, String titre_evenement, Timestamp d_debut_evenement, Timestamp d_fin_evenement, String description_evenement, String lieu_evenement, User user, String image,Set<Participation> participants) {
+    public Event(int id_evenement, String titre_evenement, Timestamp d_debut_evenement, Timestamp d_fin_evenement, String description_evenement, String lieu_evenement, User user, String image,Set<Participation> participants,CategorieEvenement categorieEvenement) {
         this.id_evenement = id_evenement;
         this.titre_evenement = titre_evenement;
         this.d_debut_evenement = d_debut_evenement;
@@ -37,10 +46,11 @@ public class Event {
         this.user = user;
         this.image = image;
         this.participants = participants != null ? participants : new HashSet<>();
-
+        this.categorieEvenement = categorieEvenement;
     }
 
-    public Event(String titre_evenement, Timestamp d_debut_evenement, Timestamp d_fin_evenement, String description_evenement, String lieu_evenement, User user, String image) {
+
+    public Event(String titre_evenement, Timestamp d_debut_evenement, Timestamp d_fin_evenement, String description_evenement, String lieu_evenement, User user, String image,CategorieEvenement categorieEvenement) {
         this.titre_evenement = titre_evenement;
         this.d_debut_evenement = d_debut_evenement;
         this.d_fin_evenement = d_fin_evenement;
@@ -48,10 +58,10 @@ public class Event {
         this.lieu_evenement = lieu_evenement;
         this.user = user;
         this.image = image;
-
+        this.categorieEvenement = categorieEvenement;
     }
 
-    public Event(int id_evenement, String titre_evenement, Timestamp d_debut_evenement, Timestamp d_fin_evenement, String description_evenement, String lieu_evenement, User user, String image) {
+    public Event(int id_evenement, String titre_evenement, Timestamp d_debut_evenement, Timestamp d_fin_evenement, String description_evenement, String lieu_evenement, User user, String image,CategorieEvenement categorieEvenement) {
         this.id_evenement = id_evenement;
         this.titre_evenement = titre_evenement;
         this.d_debut_evenement = d_debut_evenement;
@@ -60,9 +70,11 @@ public class Event {
         this.lieu_evenement = lieu_evenement;
         this.user = user;
         this.image = image;
-
+        this.categorieEvenement = categorieEvenement;
     }
 
+    public Event(int eventId) {
+    }
 
 
     public int getId_event() {
@@ -70,6 +82,14 @@ public class Event {
     }
 
     public void setId_event(int id_evenement) {
+        this.id_evenement = id_evenement;
+    }
+
+    public int getId_evenement() {
+        return id_evenement;
+    }
+
+    public void setId_evenement(int id_evenement) {
         this.id_evenement = id_evenement;
     }
 
@@ -140,17 +160,19 @@ public class Event {
         this.image = image;
     }
 
+
     @Override
     public String toString() {
         return "Event{" +
-                "titre_evenement='" + titre_evenement + '\'' +
+                "id_evenement=" + id_evenement +
+                ", titre_evenement='" + titre_evenement + '\'' +
                 ", d_debut_evenement=" + d_debut_evenement +
                 ", d_fin_evenement=" + d_fin_evenement +
                 ", description_evenement='" + description_evenement + '\'' +
                 ", lieu_evenement='" + lieu_evenement + '\'' +
-                ", participants=" + participants +
                 ", user=" + user +
                 ", image='" + image + '\'' +
+
                 '}';
     }
 
@@ -166,15 +188,7 @@ public class Event {
     public int hashCode() {
         return Objects.hash(id_evenement);
     }
-    public void addParticipant(Participation participation) {
-        participants.add(participation);
-    }
 
-    // Ajouter une méthode pour supprimer un participant de la collection
-    // Méthode pour supprimer un participant
-    public void removeParticipant() {
-        // ... votre logique existante pour supprimer un participant
-    }
 
     private int numberOfParticipants;
 
@@ -185,9 +199,27 @@ public class Event {
     public void setNumberOfParticipants(int numberOfParticipants) {
         this.numberOfParticipants = numberOfParticipants;
     }
+//    public void removeParticipant() {
+//        numberOfParticipants--;
+//    }
+//    public void addParticipant() {
+//        numberOfParticipants++;
+//    }
+public void removeParticipant(Participation participation) {
+    if (participants != null && participants.remove(participation)) {
+        numberOfParticipants--;
+    }
+}
 
-    public void addParticipant() {
-        numberOfParticipants++;
+
+    public void addParticipant(Participation participation) {
+        if (participants == null) {
+            participants = new HashSet<>();
+        }
+
+        if (participants.add(participation)) {
+            numberOfParticipants++;
+        }
     }
 
 
