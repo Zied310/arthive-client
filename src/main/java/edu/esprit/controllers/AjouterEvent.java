@@ -4,6 +4,9 @@ import edu.esprit.crud.CrudEvent;
 import edu.esprit.crud.ServiceUser;
 import edu.esprit.entities.Event;
 import edu.esprit.entities.User;
+import edu.esprit.enums.CategorieEvenement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,7 +15,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import org.w3c.dom.events.MouseEvent;
+
 
 import java.io.File;
 import java.net.URL;
@@ -26,6 +31,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
+
 
 
 public class AjouterEvent implements Initializable {
@@ -52,6 +60,8 @@ public class AjouterEvent implements Initializable {
     private File selectedFile;
     @FXML
     private ImageView imageView;
+    @FXML
+    private ComboBox<CategorieEvenement> category;
     private final CrudEvent crudEvent = new CrudEvent();
     private final ServiceUser serviceUser = new ServiceUser();
 
@@ -73,89 +83,106 @@ public class AjouterEvent implements Initializable {
         Timestamp dateDebut = convertDatePickerToTimestamp(dateDebutPicker);
         Timestamp dateFin = convertDatePickerToTimestamp(dateFinPicker);
         String description = descriptionArea.getText();
-        String image = imageView.getImage().getUrl();
         String lieu = lieuField.getText();
+        String image = imageView.getImage().getUrl();
+        CategorieEvenement categorieEvenement = category.getValue();
+
+        //Image image = imageView.getImage();
+
+
 
         User loggedInUser = serviceUser.authenticateUser("toujnaiayoub808gmail.com", "1234");
-        if (loggedInUser != null) {
-            //Event eventObj = new Event(titre, dateDebut, dateFin, description, lieu, loggedInUser, "gg.jpg");
 
-            Event eventt = new Event();
-            eventt.setUser(loggedInUser); // Associez l'utilisateur actuel au produit
-            eventt.setTitre_evenement(titre);
-            eventt.setDescription_evenement(description);
-            eventt.setLieu_evenement(lieu);
-            eventt.setD_debut_evenement(dateDebut);
-            eventt.setD_fin_evenement(dateFin);
-            eventt.setImage(image);
+        if (loggedInUser != null) {
+           // Event eventObj = new Event(titre, dateDebut, dateFin, description, lieu, loggedInUser, "siwar.jpg");
+            //String imageFilePath = selectedFile != null ? selectedFile.getAbsolutePath() : null;
+
+            Event eventt = new Event(titre,dateDebut,dateFin,description,lieu,loggedInUser,"test.jpg", category.getValue());
+//            eventt.setUser(loggedInUser); // Associez l'utilisateur actuel au produit
+//            eventt.setTitre_evenement(titre);
+//            eventt.setD_debut_evenement(dateDebut);
+//            eventt.setD_fin_evenement(dateFin);
+//            eventt.setDescription_evenement(description);
+//            eventt.setLieu_evenement(lieu);
+//            eventt.setImage(imageFilePath);
 
             crudEvent.ajouter(eventt);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
+            alert.setTitle("succès");
             alert.setHeaderText(null);
-            alert.setContentText("Event added successfully!");
+            alert.setContentText("Événement ajouté avec succès!");
             alert.showAndWait();
 
             Stage stage = (Stage) titreField.getScene().getWindow();
+            stage.setTitle(" Ajouter évènement");
             stage.close();
         } else {
             System.out.println("Error: User not found.");
         }
     }
-  //  @FXML
-//    void chooseImage(ActionEvent event) {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.getExtensionFilters().add(
-//                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
-//        );
-//        selectedFile = fileChooser.showOpenDialog(new Stage());
-//
-//        if (selectedFile != null) {
-//            // Utilisez le chemin absolu du fichier sélectionné
-//            String absoluteImagePath = selectedFile.toURI().toString();
-//            Image image = new Image(absoluteImagePath);
-//
-//            // Affichez l'image dans l'ImageView
-//            imageView.setImage(image);
-//
-//            // Vous pouvez afficher le chemin du fichier sélectionné ici si nécessaire
-//            System.out.println("Chemin de l'image sélectionnée : " + absoluteImagePath);
-//            System.out.println("Selected Image: " + selectedFile.getPath());
-//        } else {
-//            // User canceled file selection
-//            Alert alert = new Alert(Alert.AlertType.WARNING);
-//            alert.setTitle("Warning");
-//            alert.setHeaderText(null);
-//            alert.setContentText("Image selection canceled.");
-//            alert.showAndWait();
-//        }
-//    }
+
     @FXML
-    void uploadArt( javafx.scene.input.MouseEvent mouseEvent) {
-        // Créer un sélecteur de fichiers pour les images
+    void chooseImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+        );
+        selectedFile = fileChooser.showOpenDialog(new Stage());
 
-        // Filtrer les fichiers pour afficher uniquement les images
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png", "*.gif");
-        fileChooser.getExtensionFilters().add(filter);
-
-        // Afficher la boîte de dialogue de sélection de fichier
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-
-        // Charger l'image sélectionnée dans l'interface utilisateur
         if (selectedFile != null) {
-            // Vous pouvez implémenter le chargement de l'image dans un ImageView
-            Image image = new Image(selectedFile.toURI().toString());
-            System.out.println("Chemin de l'image sélectionnée : " + selectedFile.toURI().toString()); // Imprimer le chemin de l'image
+            // Utilisez le chemin absolu du fichier sélectionné
+            String absoluteImagePath = selectedFile.toURI().toString();
+            Image image = new Image(absoluteImagePath);
+
+            // Affichez l'image dans l'ImageView
             imageView.setImage(image);
 
-           // upload.setVisible(false);
+            // Vous pouvez afficher le chemin du fichier sélectionné ici si nécessaire
+            System.out.println("Chemin de l'image sélectionnée : " + absoluteImagePath);
+            System.out.println("Selected Image: " + selectedFile.getPath());
+        } else {
+            // User canceled file selection
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Image selection canceled.");
+            alert.showAndWait();
         }
     }
+//    @FXML
+//    void uploadArt( javafx.scene.input.MouseEvent mouseEvent) {
+//        // Créer un sélecteur de fichiers pour les images
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Choisir une image");
+//
+//        // Filtrer les fichiers pour afficher uniquement les images
+//        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png", "*.gif");
+//        fileChooser.getExtensionFilters().add(filter);
+//
+//        // Afficher la boîte de dialogue de sélection de fichier
+//        File selectedFile = fileChooser.showOpenDialog(new Stage());
+//
+//        // Charger l'image sélectionnée dans l'interface utilisateur
+//        if (selectedFile != null) {
+//            // Vous pouvez implémenter le chargement de l'image dans un ImageView
+//            Image image = new Image(selectedFile.toURI().toString());
+//            System.out.println("Chemin de l'image sélectionnée : " + selectedFile.toURI().toString()); // Imprimer le chemin de l'image
+//            imageView.setImage(image);
+//
+//           // upload.setVisible(false);
+//        }
+//    }
 
     private boolean validateInput() {
+        // Validate each input field and show appropriate alert if validation fails
+        if (titreField.getText().isEmpty() || dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null
+                || descriptionArea.getText().isEmpty() || lieuField.getText().isEmpty() || imageView.getImage() == null) {
+            showAlert("Veuillez compléter tous les champs.");
+            //highlightFieldError(titreField, "Le titre ne doit pas contenir de chiffres."); // Highlight the field in red
+
+            return false;
+        }
         if (dateDebutPicker != null && dateDebutPicker.getValue().isBefore(LocalDate.now())) {
             showAlert( "Date de debut invalide.");
             return false;
@@ -165,28 +192,38 @@ public class AjouterEvent implements Initializable {
             showAlert("Date de fin invalide.");
             return false;
         }
-        // Validate each input field and show appropriate alert if validation fails
-        if (titreField.getText().isEmpty() || dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null
-                || descriptionArea.getText().isEmpty() || lieuField.getText().isEmpty() || imageView.getImage() == null) {
-            showAlert("Veuillez compléter tous les champs.");
-            return false;
-        }
+
 
         if (titreField.getText().length() > 30) {
             showAlert("Le titre ne doit pas dépasser 30 caractères.");
+           // highlightFieldError(titreField, "Le titre ne depasse pas 30 lettres."); // Highlight the field in red
             return false;
         }
 
         if (descriptionArea.getText().length() > 1000) {
             showAlert("La description ne doit pas dépasser 1000 caractères.");
             return false;
+
         }
         if (containsDigits(titreField.getText())) {
             showAlert("Le titre ne peut pas contenir de chiffres.");
+            //highlightFieldError(titreField, "Le titre ne doit pas contenir de chiffres.");
+
             return false;
         }
 
         return true; // All validations passed
+    }
+    // Helper method to highlight the input field in red
+    private void highlightFieldError(TextField field, String errorMessage) {
+        field.setStyle("-fx-border-color: red;");
+        showAlert(errorMessage);
+
+        field.setOnKeyTyped(event -> {
+            // Remove the red border color when the user starts typing again
+            field.setStyle("");
+            field.setOnKeyTyped(null);
+        });
     }
     private boolean containsDigits(String s) {
         // Check if the given string contains any digits
@@ -216,6 +253,7 @@ public class AjouterEvent implements Initializable {
                 event.consume(); // Consume the event if a non-letter character is typed
             }
         });
+
         // Add text length validation for titreField
         titreField.setTextFormatter(new TextFormatter<String>((Change c) -> {
             if (c.isAdded() && c.getControlNewText().length() > 30) {
@@ -231,7 +269,22 @@ public class AjouterEvent implements Initializable {
             }
             return c;
         }));
+
+        dateFinPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (dateDebutPicker.getValue() != null && newValue != null) {
+                if (newValue.isBefore(dateDebutPicker.getValue())) {
+                    showAlert("La date de fin ne peut pas être antérieure à la date de début.");
+                    dateFinPicker.setValue(oldValue); // Revert to the old value
+                }
+            }
+        });
+        ObservableList<CategorieEvenement> categories = FXCollections.observableArrayList(CategorieEvenement.values());
+        category.setItems(categories);
+
+    }
+
     }
 
 
-}
+
+
