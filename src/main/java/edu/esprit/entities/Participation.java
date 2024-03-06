@@ -4,21 +4,24 @@ import java.util.Objects;
 
 public class Participation {
     private int id_participation;
-    private int id_participant;
-    private int id_evenement;
-private User user;
+    private Event event;
+    private User user;
 
-    Participation(){}
-    public Participation(int id_participation, int id_participant, int id_evenement ) {
-        this.id_participant = id_participant;
-        this.id_evenement = id_evenement;
-        this.id_participation=id_participation;
-
+    public Participation() {
     }
 
-    public Participation(int id_participant, int id_evenement) {
-        this.id_participant = id_participant;
-        this.id_evenement = id_evenement;
+    public Participation(int id_participation, User user, Event event) {
+        this.id_participation = id_participation;
+        this.event = event;
+        this.user = user;
+    }
+
+    public Participation(User user, Event event) {
+        this.event = event;
+        this.user = user;
+    }
+
+    public Participation(int participationId, int idUser, int idEvent) {
     }
 
     public int getId_participation() {
@@ -29,39 +32,43 @@ private User user;
         this.id_participation = id_participation;
     }
 
-    public int getId_evenement() {
-        return id_evenement;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setId_evenement(int id_evenement) {
-        this.id_evenement = id_evenement;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public int getId_participant() {
-        return id_participant;
+    public User getUser() {
+        return user;
     }
 
-    public void setId_participant(int id_participant) {
-        this.id_participant = id_participant;
+    public void setUser(User user) {
+        this.user = user;
     }
-
 
     @Override
     public String toString() {
         return "Participation{" +
-                "id_participant=" + id_participant +
+                "id_participation=" + id_participation +
+                ", event=" + event +
+                ", user=" + user +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Participation that)) return false;
-        return id_participant == that.id_participant && id_evenement == that.id_evenement;
+        if (!(o instanceof Participation)) return false;
+        Participation that = (Participation) o;
+        return id_participation == that.id_participation &&
+                Objects.equals(event, that.event) &&
+                Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_participant);
+        return Objects.hash(id_participation, event, user);
     }
 }
