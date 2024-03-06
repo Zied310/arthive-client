@@ -1,5 +1,7 @@
 package edu.esprit.controllers;
 
+
+import com.twilio.Twilio;
 import edu.esprit.crud.CrudEvent;
 import edu.esprit.crud.CrudParticipations;
 import edu.esprit.crud.ServiceUser;
@@ -8,6 +10,7 @@ import edu.esprit.entities.Event;
 import edu.esprit.entities.Participation;
 import edu.esprit.entities.User;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,13 +23,16 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +41,9 @@ import java.util.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+import static edu.esprit.crud.ServiceUser.loggedInUser;
 
 
 public class EventView extends AnchorPane implements Initializable {
@@ -73,7 +82,7 @@ public class EventView extends AnchorPane implements Initializable {
     private TextField titreTextField;
 
     @FXML
-   private DatePicker dateDebutPicker;
+    private DatePicker dateDebutPicker;
 
     @FXML
     private DatePicker dateFinPicker;
@@ -85,6 +94,14 @@ public class EventView extends AnchorPane implements Initializable {
     private TextField lieuField;
     private AfficherEvent afficherEvent;
 
+
+    // Ajoutez vos clés reCAPTCHA ici
+    private static final String RECAPTCHA_SITE_KEY = "6Ld2uospAAAAAFBiwnOsbTsq4HRxVN-NgbTf8O8i";
+    private static final String RECAPTCHA_SECRET_KEY = "6Ld2uospAAAAABOJ7tH2CTvpQztmxN9u5uFWaR77";
+
+    public EventView() {
+        crudParticipations = new CrudParticipations();
+    }
 
 
     public TextField getTitreTextField() {
@@ -131,7 +148,7 @@ public class EventView extends AnchorPane implements Initializable {
         return modifierButton;
     }
 
-    public void setModifierButton( Button modifierButton) {
+    public void setModifierButton(Button modifierButton) {
         this.modifierButton = modifierButton;
     }
 
@@ -139,7 +156,7 @@ public class EventView extends AnchorPane implements Initializable {
         return supprimerButton;
     }
 
-    public void setSupprimerButton( Button supprimerButton) {
+    public void setSupprimerButton(Button supprimerButton) {
         this.supprimerButton = supprimerButton;
     }
 
@@ -147,7 +164,7 @@ public class EventView extends AnchorPane implements Initializable {
         return participerButton;
     }
 
-    public void setParticiperButton( Button ParticiperButton) {
+    public void setParticiperButton(Button ParticiperButton) {
         this.participerButton = ParticiperButton;
     }
 
@@ -159,6 +176,7 @@ public class EventView extends AnchorPane implements Initializable {
     public void setImage(ImageView image) {
         this.eventImageView = image;
     }
+
     public Hyperlink getVoirDetail() {
         return voirDetail;
     }
@@ -210,15 +228,18 @@ public class EventView extends AnchorPane implements Initializable {
     public Button getViewDetailsButton() {
         return participerButton;
     }
+
     public void setDescriptionText(String description) {
         descriptionText.setText(description);
     }
+
     public void setAfficherEvent(AfficherEvent afficherEvent) {
         this.afficherEvent = afficherEvent;
     }
 
-   // private Event evenement;
-   private Event evenement;
+    // private Event evenement;
+    private Event evenement;
+    private VosEvenements vosEvenements;
 
     public void modifierButtonClicked(ActionEvent event) {
 
@@ -240,6 +261,7 @@ public class EventView extends AnchorPane implements Initializable {
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
+                stage.setTitle(" Modifier évènement");
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -276,6 +298,15 @@ public class EventView extends AnchorPane implements Initializable {
 
     }
 
+    private ObservableList<Event> eventsList = FXCollections.observableArrayList();
+
+    // Méthode pour mettre à jour la liste des événements dans votre classe EventView
+    private void refreshEventList(List<Event> updatedEventList) {
+        // Effacez la liste actuelle
+        eventsList.clear();
+        // Ajoutez les éléments mis à jour
+        eventsList.addAll(updatedEventList);
+    }
 
 
     public void supprimerButtonClicked(ActionEvent event) {
@@ -285,24 +316,30 @@ public class EventView extends AnchorPane implements Initializable {
         Object userData = source.getUserData();
         if (userData instanceof Event) {
             Event evenement = (Event) userData;
-        // Afficher une boîte de dialogue de confirmation
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de suppression");
-        alert.setHeaderText("Voulez-vous vraiment supprimer cet événement ?");
-        alert.setContentText("Cliquez sur OK pour confirmer la suppression, ou Annuler pour annuler.");
-        Optional<ButtonType> result = alert.showAndWait();
 
-        if ( result.isPresent() && result.get() == ButtonType.OK) {
 
-            // Appel à la méthode de suppression du CrudEvent
-            crudEvent.supprimer(evenement);
+            // Afficher une boîte de dialogue de confirmation
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de suppression");
+            alert.setHeaderText("Voulez-vous vraiment supprimer cet événement ?");
+            alert.setContentText("Cliquez sur OK pour confirmer la suppression, ou Annuler pour annuler.");
+            Optional<ButtonType> result = alert.showAndWait();
 
-            // Rafraîchissez ou mettez à jour l'interface utilisateur avec la nouvelle liste d'événements
-           // refreshEventDetails(evenement);
-           // afficherEvent.refreshEventDetails(evenement);
-            // Rafraîchissez la liste des événements après la suppression
-            List<Event> updatedEventList = crudEvent.getAll();  // ou toute autre méthode pour obtenir la liste mise à jour
-            refreshEventList(updatedEventList);
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+
+                // Appel à la méthode de suppression du CrudEvent
+                crudEvent.supprimer(evenement);
+                // Rafraîchir la liste des événements dans AfficherEvent
+                if (afficherEvent != null) {
+                    afficherEvent.refreshEvenementsList();
+                }
+                // Rafraîchir la liste des événements dans VosEvenements
+                if (vosEvenements != null) {
+                    vosEvenements.refreshEventList(crudEvent.getAll());
+                }
+
+                // Rafraîchir la liste des événements dans la vue actuelle (EventView)
+                refreshEventList(crudEvent.getAll()); // Correction : Passer la liste mise à jour ici
 
             } else {
                 System.out.println("Failed to delete event with ID " + evenement.getId_event());
@@ -311,52 +348,72 @@ public class EventView extends AnchorPane implements Initializable {
             System.out.println("UserData is not an instance of Event. Check your setup.");
         }
 
-        }
+    }
 
     private int participantId;
-    private CrudParticipations crudParticipations = new CrudParticipations();
+    private Participation participation;
+    CrudParticipations crudParticipations;
+
+    private Participation currentParticipation;
+    private boolean isParticipationAdded = false;
 
     public void participerButton(ActionEvent event) {
         Button sourceButton = (Button) event.getSource();
 
         // Assurez-vous que le userData est correctement défini sur le bouton
         Object userData = sourceButton.getUserData();
+         boolean isParticipationAdded = false;
 
         if (userData instanceof Event) {
             ServiceUser serviceUser = new ServiceUser();
             Event evenement = (Event) userData;  // Récupérez l'événement à partir du userData
-
             // Utilisez l'ID de l'utilisateur connecté comme participantId
             User loggedInUser = serviceUser.authenticateUser("toujnaiayoub808gmail.com", "1234");
             int participantId = loggedInUser.getId_user();
+            Participation participation = new Participation(loggedInUser, evenement);
 
-            //crudParticipations.ajouter(new Participation(participantId, evenement.getId_event()));
-            boolean isParticipating = crudParticipations.isParticipant(participantId, evenement.getId_event());
-            if (isParticipating) {
-                // Si l'utilisateur participe déjà, supprimez la participation
-                crudParticipations.supprimer(new Participation(participantId, evenement.getId_event()));
-                evenement.removeParticipant();  // Mettez à jour immédiatement le nombre de participants
+            if (isParticipationAdded) {
+                // Si la participation est déjà ajoutée, supprimez-la
+                crudParticipations.supprimer(participation);
+                evenement.removeParticipant(participation);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Participation supprimée");
                 alert.setHeaderText(null);
                 alert.setContentText("Votre participation à cet événement a été supprimée.");
                 alert.showAndWait();
             } else {
-                // Si l'utilisateur ne participe pas, ajoutez la participation
-                crudParticipations.ajouter(new Participation(participantId, evenement.getId_event()));
-                evenement.addParticipant();  // Mettez à jour immédiatement le nombre de participants
+
+                // Si la participation n'est pas ajoutée, ajoutez-la
+                crudParticipations.ajouter(participation);
+                evenement.addParticipant(participation);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Vous avez participé");
                 alert.setHeaderText(null);
                 alert.setContentText("Réservez la date...!");
                 alert.showAndWait();
+//                String ACCOUNT_SID = "AC830d90420c028fbee80b831b4fb7c216";
+//                String AUTH_TOKEN = "f23c4f80acf0709e57a15dc64009792f";
+//                Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+//                String userPhoneNumber ;
+//                Message message = Message.creator(
+//                        new PhoneNumber("+21692978106"),
+//                        new PhoneNumber("+13103073062"),
+//                        "Vous avez participé à l'événement ! Enregistrez la date.").create();
+//
+//                System.out.println("SMS sent successfully to " + "+21692978106");
+
             }
 
+            // Inversez l'état de la participation
+            isParticipationAdded = !isParticipationAdded;
+
+            // Mettez à jour l'interface utilisateur avec le nombre de participants actuel
             updateParticipantCount(evenement);
         } else {
             System.out.println("UserData n'est pas une instance de Event. Vérifiez votre configuration.");
         }
     }
+
 
     public void voirDetailClicked(ActionEvent event) {
         Hyperlink source = (Hyperlink) event.getSource();
@@ -387,6 +444,7 @@ public class EventView extends AnchorPane implements Initializable {
             System.out.println("UserData is not an instance of Event. Check your setup.");
         }
     }
+
     private void updateParticipantCount(Event evenement) {
         boolean isParticipating = crudParticipations.isParticipant(participantId, evenement.getId_event());
 
@@ -418,28 +476,30 @@ public class EventView extends AnchorPane implements Initializable {
         eventImageView.setFitWidth(50);
         eventImageView.setFitHeight(50);
 
-            if (evenement != null) {
-                // Assurez-vous que la propriété "imagePath" de la classe Event correspond à votre chemin d'image
-                String imagePath = evenement.getImage();
+        if (evenement != null) {
+            // Assurez-vous que la propriété "imagePath" de la classe Event correspond à votre chemin d'image
+            String imagePath = evenement.getImage();
 
-                // Chargez et définissez l'image
-                if (imagePath != null && !imagePath.isEmpty()) {
-                    Image image = new Image(new File(imagePath).toURI().toString());
-                    eventImageView.setImage(image);
-                }
+            // Chargez et définissez l'image
+            if (imagePath != null && !imagePath.isEmpty()) {
+                // Image image = new Image(imagePath);
+                Image image = new Image(new File(imagePath).toURI().toString());
+                eventImageView.setImage(image);
+
             }
+        }
 
-            titleText.setText( evenement.getTitre_evenement());
-            dateText.setText(evenement.getD_debut_evenement().toString());
-            lieuText.setText( evenement.getLieu_evenement());
-            Set<Participation> participations = crudEvent.getParticipationsForEvent(evenement.getId_event());
+        titleText.setText(evenement.getTitre_evenement());
+        dateText.setText(evenement.getD_debut_evenement().toString());
+        lieuText.setText(evenement.getLieu_evenement());
+        Set<Participation> participations = crudEvent.getParticipationsForEvent(evenement.getId_event());
         if (participations != null) {
-            ParticipantText.setText( participations.size() +" "+ "paticipants");
+            ParticipantText.setText(participations.size() + " " + "paticipants");
         } else {
             ParticipantText.setText("La liste des participants est nulle.");
         }
 
-            voirDetail.setUserData(evenement);
+        voirDetail.setUserData(evenement);
 
         // Ajoutez le code ici pour définir le userData du bouton "Modifier"
         modifierButton.setUserData(evenement);
@@ -450,27 +510,31 @@ public class EventView extends AnchorPane implements Initializable {
         participerButton.setOnAction(this::participerButton);
 
 
-        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       descriptionText = new Label();
+        descriptionText = new Label();
         supprimerButton.setOnAction(this::supprimerButtonClicked);
+        participerButton.setOnAction(this::participerButton);
 
     }
-//    public void initializeEventView(ObservableList<Event> eventsList) {
+
+    //    public void initializeEventView(ObservableList<Event> eventsList) {
 //        // Configurez la vue avec la liste observable
 //        // ...
 //    }
     public void setParticipantId(int participantId) {
         this.participantId = participantId;
     }
-    public void refreshEventList(List<Event> updatedEventList) {
-        // Mettez à jour la liste des événements avec la nouvelle liste
-        // Mettez à jour l'interface utilisateur en conséquence
-        // ...
-    }
+
+
+
+
+
+
 
 
 }
+
 
